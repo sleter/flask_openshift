@@ -34,6 +34,7 @@ ENV PATH /opt/conda/bin:$PATH
 RUN mkdir -p /deploy/app
 COPY app/requirements.txt /deploy/app/requirements.txt
 RUN conda install -y --file /deploy/app/requirements.txt
+RUN pip install openshift
 
 # Deploy application
 COPY gunicorn_config.py /deploy/gunicorn_config.py
