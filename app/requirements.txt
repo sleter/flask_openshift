@@ -41,3 +41,4 @@ wheel=0.29.0=py36he7f4e38_1
 xz=5.2.3=h2bcbf08_1
 yaml=0.1.7=h96e3832_1
 zlib=1.2.11=hfbfcf68_1
+openshift
