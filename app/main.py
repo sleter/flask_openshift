@@ -20,7 +20,8 @@ def index():
 def add_pod():
     
     config.load_incluster_config()
-    k8s_client = config.new_client_from_config()
+    #k8s_client = config.new_client_from_config()
+    k8s_client = client.CoreV1Api()
     dyn_client = DynamicClient(k8s_client)
 
     v1_pod = dyn_client.resources.get(api_version='v1', kind='Pod')
