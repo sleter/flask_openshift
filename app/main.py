@@ -18,6 +18,8 @@ def index():
 
 @app.route('/add_pod')
 def add_pod():
+    
+    config.load_incluster_config()
     k8s_client = config.new_client_from_config()
     dyn_client = DynamicClient(k8s_client)
 
