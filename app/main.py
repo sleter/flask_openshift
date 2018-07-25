@@ -19,7 +19,7 @@ def index():
 @app.route('/add_pod')
 def add_pod():
     config.load_incluster_config()
-    api = client.CoreV1Api()
+    api = client.OapiApi()
 
     pod = """
     kind: Pod
