@@ -19,9 +19,9 @@ def index():
 @app.route('/add_pod')
 def add_pod():
 
-    oclient_config = config.new_client_from_config()
+    oclient_config = config.load_incluster_config()
     oapi = client.OapiApi(oclient_config)
-    kclient_config = config.new_client_from_config()
+    kclient_config = config.load_kube_config()
     api = kubernetes.client.CoreV1Api(kclient_config)
 
     pod = """
