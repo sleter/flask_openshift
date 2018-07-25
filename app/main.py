@@ -1,4 +1,4 @@
-import os, logging, socket, yaml
+import os, logging, socket, yaml, kubernetes
 from flask import Flask, jsonify, render_template
 from kubernetes import client, config
 from openshift.dynamic import DynamicClient
@@ -18,8 +18,11 @@ def index():
 
 @app.route('/add_pod')
 def add_pod():
-    config.load_incluster_config()
-    api = client.OapiApi()
+
+    oclient_config = config.new_client_from_config()
+    oapi = client.OapiApi(oclient_config)
+    kclient_config = config.new_client_from_config()
+    api = kubernetes.client.CoreV1Api(kclient_config)
 
     pod = """
     kind: Pod
@@ -38,7 +41,8 @@ def add_pod():
     """
 
     pod_data = yaml.load(pod)
-    resp = api.create_namespaced_pod(body=pod_data, namespace='flask-app')
+    #resp = api.create_namespaced_pod(body=pod_data, namespace='flask-app')
+    resp = oapi.create_namespaced_pod(body=pod_data, namespace='flask-app')
 
     # resp is a ResourceInstance object
     return jsonify({'data': resp.metadata.self_link})
