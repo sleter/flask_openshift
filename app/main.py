@@ -38,7 +38,7 @@ def add_pod():
     """
 
     pod_data = yaml.load(pod)
-    resp = api.create_namespaced_pod(body=pod_data, namespace='nvidia')
+    resp = api.create_namespaced_pod(body=pod_data, namespace='flask-app')
 
     # resp is a ResourceInstance object
     return jsonify({'data': resp.metadata.self_link})
