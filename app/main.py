@@ -19,10 +19,14 @@ def index():
 @app.route('/add_pod')
 def add_pod():
 
-    oclient_config = config.load_incluster_config()
-    oapi = client.OapiApi(oclient_config)
-    kclient_config = config.load_kube_config()
-    api = kubernetes.client.CoreV1Api(kclient_config)
+    c = config.load_incluster_config()
+    k8s_client = config.new_client_from_config(c)
+    dyn_client = DynamicClient(k8s_client)
+    #oapi = client.OapiApi(oclient_config)
+    #kclient_config = config.load_kube_config()
+    #api = kubernetes.client.CoreV1Api(kclient_config)
+    
+    v1_pod = dyn_client.resources.get(api_version='v1', kind='Pod')
 
     pod = """
     kind: Pod
@@ -42,7 +46,8 @@ def add_pod():
 
     pod_data = yaml.load(pod)
     #resp = api.create_namespaced_pod(body=pod_data, namespace='flask-app')
-    resp = oapi.create_namespaced_pod(body=pod_data, namespace='flask-app')
+    #resp = oapi.create_namespaced_pod(body=pod_data, namespace='flask-app')
+    resp = v1_pod.create(body=pod_data, namespace='flask-app')
 
     # resp is a ResourceInstance object
     return jsonify({'data': resp.metadata.self_link})
