@@ -18,13 +18,8 @@ def index():
 
 @app.route('/add_pod')
 def add_pod():
-    
     config.load_incluster_config()
-    #k8s_client = config.new_client_from_config()
-    k8s_client = client.CoreV1Api()
-    dyn_client = DynamicClient(k8s_client)
-
-    v1_pod = dyn_client.resources.get(api_version='v1', kind='Pod')
+    api = client.CoreV1Api()
 
     pod = """
     kind: Pod
@@ -40,13 +35,13 @@ def add_pod():
           - "sleep 60m"
         imagePullPolicy: IfNotPresent
         name: alpine
-      restartPolicy: Always
     """
 
     pod_data = yaml.load(pod)
-    resp = v1_pod.create(body=pod_data, namespace='nvidia')
+    resp = api.create_namespaced_pod(body=pod_data, namespace='nvidia')
 
-    return resp.metadata
+    # resp is a ResourceInstance object
+    return jsonify({'data': resp.metadata.self_link})
     
 
 @app.route('/info')
