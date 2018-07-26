@@ -1,4 +1,7 @@
 FROM alpine:3.6
+
+USER root
+
 LABEL maintainer="dat.tran@idealo.de"
 
 # Install miniconda
