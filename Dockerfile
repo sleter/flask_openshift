@@ -2,8 +2,6 @@ FROM alpine:3.6
 
 USER root
 
-LABEL maintainer="dat.tran@idealo.de"
-
 # Install miniconda
 RUN apk --update --repository http://dl-4.alpinelinux.org/alpine/edge/community add \
     bash \
