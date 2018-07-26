@@ -8,6 +8,7 @@ APP_NAME = os.environ.get('OPENSHIFT_APP_NAME', 'flask')
 IP = os.environ.get('OPENSHIFT_PYTHON_IP', '127.0.0.1')
 PORT = int(os.environ.get('OPENSHIFT_PYTHON_PORT', 8080))
 HOME_DIR = os.environ.get('OPENSHIFT_HOMEDIR', os.getcwd())
+NAMESPACE = os.environ.get('OPENSHIFT_NAMESPACE', 'default')
 
 log = logging.getLogger(__name__)
 app = Flask(__name__)
@@ -61,7 +62,8 @@ def info():
         'ip': IP,
         'port': PORT,
         'home_dir': HOME_DIR,
-        'host': socket.gethostname()
+        'host': socket.gethostname(),
+        'namespace': NAMESPACE
     })
 
 if __name__ == '__main__':
